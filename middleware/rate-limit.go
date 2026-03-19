@@ -198,5 +198,8 @@ func userRedisRateLimiter(c *gin.Context, maxRequestNum int, duration int64, key
 // SearchRateLimit returns a per-user rate limiter for search endpoints.
 // 10 requests per 60 seconds per user (by user ID, not IP).
 func SearchRateLimit() func(c *gin.Context) {
+	if !common.SearchRateLimitEnable {
+		return defNext
+	}
 	return userRateLimitFactory(common.SearchRateLimitNum, common.SearchRateLimitDuration, "SR")
 }
