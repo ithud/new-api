@@ -113,6 +113,12 @@
 git clone https://github.com/QuantumNous/new-api.git
 cd new-api
 
+# If you are building the image from source (not pulling a prebuilt image), prebuild the frontend:
+# cd web
+# bun install
+# bun run build
+# cd ..
+
 # Edit docker-compose.yml configuration
 nano docker-compose.yml
 

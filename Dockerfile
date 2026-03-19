@@ -21,7 +21,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && update-ca-certificates
 
-COPY --from=builder2 /build/new-api /
+COPY --from=builder /build/new-api /
 EXPOSE 3000
 WORKDIR /data
 ENTRYPOINT ["/new-api"]
