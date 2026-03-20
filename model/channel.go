@@ -604,6 +604,13 @@ func handlerMultiKeyUpdate(channel *Channel, usingKey string, status int, reason
 			info["status_reason"] = "All keys are disabled"
 			info["status_time"] = common.GetTimestamp()
 			channel.SetOtherInfo(info)
+		} else if channel.Status == common.ChannelStatusAutoDisabled {
+			// At least one key is enabled again; restore channel status from auto-disabled.
+			channel.Status = common.ChannelStatusEnabled
+			info := channel.GetOtherInfo()
+			delete(info, "status_reason")
+			delete(info, "status_time")
+			channel.SetOtherInfo(info)
 		}
 	}
 }

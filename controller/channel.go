@@ -1455,6 +1455,17 @@ func ManageMultiKeys(c *gin.Context) {
 			delete(channel.ChannelInfo.MultiKeyDisabledReason, keyIndex)
 		}
 
+		// If channel was auto-disabled and now has at least one enabled key, restore it.
+		if channel.Status == common.ChannelStatusAutoDisabled &&
+			channel.ChannelInfo.MultiKeySize > 0 &&
+			len(channel.ChannelInfo.MultiKeyStatusList) < channel.ChannelInfo.MultiKeySize {
+			channel.Status = common.ChannelStatusEnabled
+			info := channel.GetOtherInfo()
+			delete(info, "status_reason")
+			delete(info, "status_time")
+			channel.SetOtherInfo(info)
+		}
+
 		err = channel.Update()
 		if err != nil {
 			common.ApiError(c, err)
@@ -1478,6 +1489,15 @@ func ManageMultiKeys(c *gin.Context) {
 		channel.ChannelInfo.MultiKeyStatusList = make(map[int]int)
 		channel.ChannelInfo.MultiKeyDisabledTime = make(map[int]int64)
 		channel.ChannelInfo.MultiKeyDisabledReason = make(map[int]string)
+
+		// If channel was auto-disabled, restore it since all keys are enabled.
+		if channel.Status == common.ChannelStatusAutoDisabled && channel.ChannelInfo.MultiKeySize > 0 {
+			channel.Status = common.ChannelStatusEnabled
+			info := channel.GetOtherInfo()
+			delete(info, "status_reason")
+			delete(info, "status_time")
+			channel.SetOtherInfo(info)
+		}
 
 		err = channel.Update()
 		if err != nil {
