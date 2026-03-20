@@ -1455,17 +1455,6 @@ func ManageMultiKeys(c *gin.Context) {
 			delete(channel.ChannelInfo.MultiKeyDisabledReason, keyIndex)
 		}
 
-		// If channel was auto-disabled and now has at least one enabled key, restore it.
-		if channel.Status == common.ChannelStatusAutoDisabled &&
-			channel.ChannelInfo.MultiKeySize > 0 &&
-			len(channel.ChannelInfo.MultiKeyStatusList) < channel.ChannelInfo.MultiKeySize {
-			channel.Status = common.ChannelStatusEnabled
-			info := channel.GetOtherInfo()
-			delete(info, "status_reason")
-			delete(info, "status_time")
-			channel.SetOtherInfo(info)
-		}
-
 		err = channel.Update()
 		if err != nil {
 			common.ApiError(c, err)
