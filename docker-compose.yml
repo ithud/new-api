@@ -29,7 +29,7 @@ services:
       - ./data:/data
       - ./logs:/app/logs
     environment:
-      - SQL_DSN=postgres://fusion:hZP0l31C6UQmvrjF@pgm-2evs189pn6d0k1r9.pg.rds-aliyun-america.rds.aliyuncs.com:5432/fusion_ai?sslmode=disable&options=-c%20timezone=UTC # ⚠️ IMPORTANT: Change the password in production!
+      - SQL_DSN=postgres://fusion:hZP0l31C6UQmvrjF@pgm-3ns85t0tz0yxz30x.pg.rds.aliyuncs.com:5432/fusion_ai?sslmode=disable&options=-c%20timezone=UTC # ⚠️ IMPORTANT: Change the password in production!
 #      - SQL_DSN=root:123456@tcp(mysql:3306)/new-api  # Point to the mysql service, uncomment if using MySQL
       - REDIS_CONN_STRING=redis://redis
       - TZ=UTC
